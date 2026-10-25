@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#11111a">
+<meta name="description" content="Nova Office: herramientas escolares desde tu celular.">
+<link rel="manifest" href="manifest.json">
+<title>Nova Office</title>
+<style>
+:root{color-scheme:dark;--bg:#0c0d13;--panel:#171923;--panel2:#202331;--line:#303447;--text:#f5f5fa;--muted:#a6a9bc;--accent:#b7a4ff;--accent2:#e0d8ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:20px 16px 14px;background:linear-gradient(135deg,#1d1b32,#11111a);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
+.brand{font-size:25px;font-weight:800;letter-spacing:.3px}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:13px;margin-top:3px}
+main{max-width:760px;margin:auto;padding:14px 12px 36px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 14px}
+button,.btn{border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);padding:11px 12px;font:inherit;font-weight:650;cursor:pointer}
+button.active{background:var(--accent);color:#171323;border-color:var(--accent)}button:focus-visible,input:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible{outline:2px solid var(--accent)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+h1{font-size:20px;margin:0 0 5px}h2{font-size:16px;margin:0 0 10px}.muted{color:var(--muted);font-size:13px}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:#10121b;color:var(--text);border-radius:10px;padding:11px;font:inherit}
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.toolbar button{padding:8px 10px;font-size:13px}
+#docEditor{min-height:300px;background:#fff;color:#20202a;border-radius:10px;padding:18px;line-height:1.6;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.actions button{flex:1;min-width:130px}
+.hidden{display:none!important}
+.gridwrap{overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px}
+table{border-collapse:collapse;width:100%;min-width:500px;background:#11131c}td,th{border:1px solid var(--line);padding:0}th{font-size:12px;color:var(--muted);padding:7px;background:#1c1f2b}
+td input{border:0;border-radius:0;min-width:90px;padding:10px;background:transparent}
+.slide{background:#f7f5ff;color:#242033;min-height:190px;border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;margin-top:12px;white-space:pre-wrap}
+.slide strong{font-size:23px}.slide p{margin:10px 0 0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:8px 16px 24px}
+.note{border-left:3px solid var(--accent);padding:9px 11px;background:#201e2d;border-radius:5px;color:#ded9f7;font-size:13px;margin-top:12px}
+@media print{header,.tabs,.no-print,footer{display:none!important}body{background:#fff;color:#000}main{padding:0}.panel{border:0;background:#fff;padding:0}#docEditor{border:0;color:#000;border-radius:0;padding:0}.slide{break-after:page}}
+</style>
+</head>
+<body>
+<header><div class="brand">NOVA <span>OFFICE</span></div><div class="tag">Tus trabajos escolares, desde tu celular ⭐</div></header>
+<main>
+  <div class="tabs no-print">
+    <button class="active" data-tab="docs">📝 Documentos</button>
+    <button data-tab="sheets">▦ Tablas</button>
+    <button data-tab="slides">▣ Presentaciones</button>
+  </div>
+
+  <section id="docs" class="tool">
+    <div class="panel">
+      <h1>Documentos</h1><div class="muted">Escribe, da formato y guarda tu trabajo.</div>
+      <label for="docName">Nombre del archivo</label><input id="docName" value="Mi trabajo escolar" maxlength="80">
+      <div class="toolbar no-print">
+        <button data-cmd="bold"><b>Negrita</b></button><button data-cmd="italic"><i>Cursiva</i></button>
+        <button data-cmd="underline"><u>Subrayar</u></button>
+        <button data-cmd="insertUnorderedList">• Viñetas</button><button data-cmd="insertOrderedList">1. Lista</button>
+        <button id="alignCenter">Centrar</button>
+      </div>
+      <div id="docEditor" contenteditable="true" spellcheck="true"><h2 style="text-align:center">Título de mi trabajo</h2><p><b>Nombre:</b> Escribe tu nombre aquí</p><p><b>Materia:</b> Escribe la materia</p><p><b>Fecha:</b> Escribe la fecha</p><hr><p>Comienza a escribir tu investigación aquí...</p></div>
+      <div class="actions no-print"><button id="saveDoc">Guardar en este celular</button><button id="exportDoc">Exportar como HTML</button><button id="pdfDoc">Imprimir / Guardar PDF</button></div>
+      <div id="saveStatus" class="muted" aria-live="polite" style="margin-top:8px">El trabajo se guarda solo en este navegador cuando escribes.</div>
+    </div>
+    <div class="note">Consejo: para crear un PDF, toca “Imprimir / Guardar PDF” y en las opciones de impresión de Android elige “Guardar como PDF”, si aparece.</div>
+  </section>
+
+  <section id="sheets" class="tool hidden">
+    <div class="panel">
+      <h1>Tablas y cálculos</h1><div class="muted">Una cuadrícula sencilla para organizar información escolar.</div>
+      <label for="sheetName">Nombre de la tabla</label><input id="sheetName" value="Mi tabla" maxlength="80">
+      <div class="gridwrap"><table id="sheet"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead><tbody></tbody></table></div>
+      <div class="actions no-print"><button id="addRow">+ Agregar fila</button><button id="exportCsv">Exportar CSV</button><button id="saveSheet">Guardar tabla</button></div>
+      <div class="note">Esta primera versión permite organizar datos y exportarlos como CSV. Todavía no reemplaza Excel ni calcula todas sus fórmulas.</div>
+    </div>
+  </section>
+
+  <section id="slides" class="tool hidden">
+    <div class="panel">
+      <h1>Presentaciones</h1><div class="muted">Prepara el contenido de tus diapositivas.</div>
+      <label for="slideTitle">Título de la diapositiva</label><input id="slideTitle" value="Mi exposición" maxlength="120">
+      <label for="slideBody">Contenido</label><textarea id="slideBody" rows="6" placeholder="Escribe los puntos principales de tu exposición...">• Introducción
+• Ideas principales
+• Conclusión</textarea>
+      <div class="slide" id="slidePreview"><strong>Mi exposición</strong><p>• Introducción
+• Ideas principales
+• Conclusión</p></div>
+      <div class="actions no-print"><button id="saveSlides">Guardar presentación</button><button id="printSlides">Imprimir / Guardar PDF</button></div>
+      <div class="note">Esta versión inicial crea una diapositiva de contenido. Después podremos añadir varias diapositivas, diseños e importación/exportación PowerPoint.</div>
+    </div>
+  </section>
+</main>
+<footer>Nova Office · Prototipo inicial · Guarda copias de tus trabajos importantes.</footer>
+<script>
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const safeName=s=>(s||'Nova Office').trim().replace(/[\\/:*?"<>|]+/g,'-').slice(0,70)||'Nova Office';
+function download(name, content, type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function setStatus(msg){$('#saveStatus').textContent=msg}
+$$('[data-tab]').forEach(b=>b.addEventListener('click',()=>{$$('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));$$('.tool').forEach(s=>s.classList.toggle('hidden',s.id!==b.dataset.tab))}));
+$$('[data-cmd]').forEach(b=>b.addEventListener('click',()=>{document.execCommand(b.dataset.cmd,false,null);$('#docEditor').focus()}));
+$('#alignCenter').addEventListener('click',()=>{document.execCommand('justifyCenter',false,null);$('#docEditor').focus()});
+let saveTimer;
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem('nova_doc_html',$('#docEditor').innerHTML);localStorage.setItem('nova_doc_name',$('#docName').value);setStatus('Guardado automáticamente en este navegador.')}catch(e){setStatus('No se pudo guardar automáticamente. Usa “Guardar en este celular”.')}},350)}
+$('#docEditor').addEventListener('input',autoSave);$('#docName').addEventListener('input',autoSave);
+try{const saved=localStorage.getItem('nova_doc_html');if(saved)$('#docEditor').innerHTML=saved;if(localStorage.getItem('nova_doc_name'))$('#docName').value=localStorage.getItem('nova_doc_name')}catch(e){}
+$('#saveDoc').addEventListener('click',()=>{try{localStorage.setItem('nova_doc_html',$('#docEditor').innerHTML);localStorage.setItem('nova_doc_name',$('#docName').value);setStatus('Trabajo guardado en este navegador. Exporta también una copia para evitar perderlo.')}catch(e){setStatus('El navegador no permitió guardar. Exporta una copia.') }});
+$('#exportDoc').addEventListener('click',()=>{const title=safeName($('#docName').value);const html='<!doctype html><html lang="es"><head><meta charset="utf-8"><title>'+title+'</title></head><body>'+$('#docEditor').innerHTML+'</body></html>';download(title+'.html',html,'text/html;charset=utf-8')});
+$('#pdfDoc').addEventListener('click',()=>window.print());
+const tbody=$('#sheet tbody');
+function addRow(values=[]){const tr=document.createElement('tr');const n=tbody.children.length+1;const th=document.createElement('th');th.textContent=n;tr.appendChild(th);for(let i=0;i<4;i++){const td=document.createElement('td');const input=document.createElement('input');input.setAttribute('aria-label','Fila '+n+', columna '+String.fromCharCode(65+i));input.value=values[i]||'';input.addEventListener('input',saveSheetLocal);td.appendChild(input);tr.appendChild(td)}tbody.appendChild(tr)}
+function getSheet(){return [...tbody.querySelectorAll('tr')].map(tr=>[...tr.querySelectorAll('input')].map(i=>i.value))}
+function saveSheetLocal(){try{localStorage.setItem('nova_sheet',JSON.stringify(getSheet()));localStorage.setItem('nova_sheet_name',$('#sheetName').value)}catch(e){}}
+for(let i=0;i<6;i++)addRow();
+try{const rows=JSON.parse(localStorage.getItem('nova_sheet')||'null');if(rows){tbody.innerHTML='';rows.forEach(r=>addRow(r))}if(localStorage.getItem('nova_sheet_name'))$('#sheetName').value=localStorage.getItem('nova_sheet_name')}catch(e){}
+$('#addRow').addEventListener('click',()=>addRow());$('#saveSheet').addEventListener('click',()=>{saveSheetLocal();alert('Tabla guardada en este navegador.')});
+$('#exportCsv').addEventListener('click',()=>{const rows=getSheet();const csv=[['A','B','C','D'],...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');download(safeName($('#sheetName').value)+'.csv','\ufeff'+csv,'text/csv;charset=utf-8')});
+function updateSlide(){const title=$('#slideTitle').value||'Mi exposición';$('#slidePreview').innerHTML='<strong></strong><p></p>';$('#slidePreview strong').textContent=title;$('#slidePreview p').textContent=$('#slideBody').value}
+$('#slideTitle').addEventListener('input',updateSlide);$('#slideBody').addEventListener('input',updateSlide);
+$('#saveSlides').addEventListener('click',()=>{try{localStorage.setItem('nova_slide_title',$('#slideTitle').value);localStorage.setItem('nova_slide_body',$('#slideBody').value);alert('Presentación guardada en este navegador.')}catch(e){alert('No se pudo guardar en este navegador.')}});
+try{if(localStorage.getItem('nova_slide_title'))$('#slideTitle').value=localStorage.getItem('nova_slide_title');if(localStorage.getItem('nova_slide_body'))$('#slideBody').value=localStorage.getItem('nova_slide_body');updateSlide()}catch(e){}
+$('#printSlides').addEventListener('click',()=>{const w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para imprimir la presentación.');return}w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Presentación</title><style>body{font-family:Arial;padding:10vw}.slide{height:75vh;display:flex;flex-direction:column;justify-content:center;page-break-after:always}h1{font-size:32pt}p{font-size:20pt;white-space:pre-wrap}</style></head><body><div class="slide"><h1>'+escapeHtml($('#slideTitle').value)+'</h1><p>'+escapeHtml($('#slideBody').value)+'</p></div><script>window.onload=()=>window.print()<\/script></body></html>');w.document.close()});
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>

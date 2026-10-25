@@ -1,0 +1,23 @@
+NOVA OFFICE — PROTOTIPO PWA
+============================
+
+Archivos:
+- index.html: aplicación web
+- manifest.json: nombre e instalación como app web
+- sw.js: caché básica para abrir la interfaz sin conexión después de la primera visita
+- icon.svg: icono
+
+CÓMO PROBAR DESDE ANDROID
+1. Sube los cuatro archivos a un repositorio de GitHub.
+2. Activa GitHub Pages en Settings > Pages (rama principal / root).
+3. Abre la dirección HTTPS que genere GitHub Pages en Chrome.
+4. Menú de Chrome (⋮) > "Instalar aplicación" o "Añadir a pantalla principal".
+
+IMPORTANTE
+- Es un prototipo, no una app publicada en Google Play.
+- Para instalar como PWA necesita estar alojada en HTTPS; abrir el HTML local no instala el service worker.
+- Documentos: guarda localmente y exporta HTML; la opción de imprimir puede permitir guardar PDF.
+- Tablas: exporta CSV, no XLSX, y no incluye fórmulas.
+- Presentaciones: una diapositiva básica imprimible, todavía no PPTX.
+- El almacenamiento local puede borrarse si se borran los datos del navegador. Exporta copias de tareas importantes.
+- Antes de cobrar o publicar, hay que probar, mejorar accesibilidad, compatibilidad de archivos y seguridad.
